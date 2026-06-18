@@ -39,4 +39,12 @@ df = df.drop(
     columns=["Symbol"]
 )
 
-print(df.info())
+print(df.info())   
+
+df["Target"] = (
+    df["Close"].shift(-1)
+    >df["Close"]
+).astype(int)
+
+print(df["Target"].value_counts())
+print(df["Target"].value_counts(normalize=True) * 100)
