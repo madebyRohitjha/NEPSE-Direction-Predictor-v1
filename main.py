@@ -48,3 +48,9 @@ df["Target"] = (
 
 print(df["Target"].value_counts())
 print(df["Target"].value_counts(normalize=True) * 100)
+
+df["Daily_Range"] = df["High"] - df["Low"]
+
+df["Open_Close_Diff"] = df["Close"] - df["Open"]
+
+print(df.head())
