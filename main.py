@@ -54,3 +54,29 @@ df["Daily_Range"] = df["High"] - df["Low"]
 df["Open_Close_Diff"] = df["Close"] - df["Open"]
 
 print(df.head())
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+X = df[['Open','High','Low','Close',
+        'Daily_Range','Open_Close_Diff']]
+
+y = df['Target']
+
+X_train, X_test, Y_train, y_test = train_test_split(
+    X,y,
+    test_size=0.2,
+    random_state=42
+)
+
+model = LogisticRegression(max_iter=1000)
+
+model.fit(X_train,Y_train)
+
+preds = model.predict(X_test)
+
+print("Accuracy:",accuracy_score(y_test, preds))
+
+## Logistic Regression Accuracy: 57.83%
