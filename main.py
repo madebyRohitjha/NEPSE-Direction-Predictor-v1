@@ -79,4 +79,39 @@ preds = model.predict(X_test)
 
 print("Accuracy:",accuracy_score(y_test, preds))
 
-## Logistic Regression Accuracy: 57.83%
+## Logistic Regression Accuracy: 57.83% 
+
+#with python pipeline
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.pipeline import Pipeline
+
+dt_pipeline = Pipeline([
+    ("model", DecisionTreeClassifier(
+        random_state=42
+    ))
+])
+dt_pipeline.fit(X_train, Y_train)
+
+dt_pipeline.fit(X_train, Y_train)
+
+y_pred_dt = dt_pipeline.predict(X_test)
+
+from sklearn.metrics import accuracy_score
+
+print(
+    "Decision Tree Accuracy:",
+    accuracy_score(y_test, y_pred_dt)
+)
+
+from sklearn.model_selection import cross_val_score
+
+scores = cross_val_score(
+    dt_pipeline,
+    X,
+    y,
+    cv=5
+)
+
+print(scores)
+print("Average:", scores.mean())
+
