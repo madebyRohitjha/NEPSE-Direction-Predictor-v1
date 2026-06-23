@@ -11,13 +11,13 @@ Build a classification model that predicts:
 * **1 → Market goes UP tomorrow**
 * **0 → Market goes DOWN tomorrow**
 
-This project aims to explore whether historical market information can be used to predict the next day's market direction.
+using historical NEPSE market information and feature engineering.
 
 ---
 
 # 📂 Dataset
 
-Dataset: Historical NEPSE Index Data (2021–2026)
+**Dataset:** Historical NEPSE Index Data (2021–2026)
 
 ### Features Available
 
@@ -37,11 +37,11 @@ Performed the following preprocessing steps:
 
 ✅ Converted `Date` to datetime format
 
+✅ Converted `Percent Change` to numeric values
+
+✅ Converted `Volume` to numeric values
+
 ✅ Removed unnecessary columns
-
-✅ Converted `Percent Change` from string to numeric
-
-✅ Converted `Volume` from string to numeric
 
 ✅ Handled invalid and missing values
 
@@ -49,31 +49,31 @@ Performed the following preprocessing steps:
 
 # ⚙️ Feature Engineering
 
-Created additional features to capture market behavior.
+Created additional features to better represent market behavior.
 
-### 1. Daily Range
+### Daily Range
 
 ```python
 df["Daily_Range"] = df["High"] - df["Low"]
 ```
 
-Measures market volatility during the day.
+Measures market volatility during the trading day.
 
 ---
 
-### 2. Open-Close Difference
+### Open-Close Difference
 
 ```python
 df["Open_Close_Diff"] = df["Close"] - df["Open"]
 ```
 
-Measures the net movement of the market during the trading session.
+Measures the market's movement from opening to closing.
 
 ---
 
 # 🎯 Target Engineering
 
-Created the prediction target:
+Created the target variable:
 
 ```python
 df["Target"] = (
@@ -104,7 +104,7 @@ A model that always predicts **DOWN** would achieve:
 53.91% accuracy
 ```
 
-Any machine learning model must beat this baseline.
+Any ML model must beat this baseline.
 
 ---
 
@@ -114,7 +114,7 @@ Any machine learning model must beat this baseline.
 
 **Accuracy:** 57.83%
 
-Successfully outperformed the baseline.
+Successfully outperformed the baseline and currently performs the best.
 
 ---
 
@@ -122,13 +122,28 @@ Successfully outperformed the baseline.
 
 **Accuracy:** 54.78%
 
-Cross Validation Average:
+**Cross Validation Average:** 51.91%
 
-```text
-51.91%
-```
+Showed signs of overfitting and underperformed compared to Logistic Regression.
 
-The model showed signs of overfitting and underperformed compared to Logistic Regression.
+---
+
+## 3. Random Forest Classifier
+
+**Accuracy:** 56.09%
+
+Improved over the baseline and Decision Tree but still slightly underperformed compared to Logistic Regression.
+
+---
+
+# 📈 Model Comparison
+
+| Model                  | Accuracy |
+| ---------------------- | -------- |
+| Baseline (Always DOWN) | 53.91%   |
+| Decision Tree          | 54.78%   |
+| Random Forest          | 56.09%   |
+| 🥇 Logistic Regression | 57.83%   |
 
 ---
 
@@ -144,7 +159,7 @@ The model showed signs of overfitting and underperformed compared to Logistic Re
 
 ---
 
-# 📈 Current Project Workflow
+# 📂 Project Workflow
 
 ```text
 Raw NEPSE Data
@@ -161,24 +176,24 @@ Logistic Regression
         ↓
 Decision Tree
         ↓
-Model Comparison
+Random Forest
         ↓
-(Random Forest - Coming Next)
+Model Comparison
 ```
 
 ---
 
 # 🚀 Upcoming Improvements
 
-* [ ] Random Forest Classifier
-* [ ] XGBoost
 * [ ] Feature Importance Analysis
-* [ ] Hyperparameter Tuning
 * [ ] Technical Indicators
 
-  * Moving Averages
+  * Moving Average (MA5)
+  * Moving Average (MA10)
   * RSI
   * MACD
+* [ ] Hyperparameter Tuning
+* [ ] XGBoost
 * [ ] Interactive Dashboard
 * [ ] Model Deployment
 
@@ -186,10 +201,10 @@ Model Comparison
 
 # 📚 Key Learnings
 
-* Data cleaning and feature engineering are crucial in ML projects.
-* Baseline accuracy should always be established before training models.
-* Simpler models can outperform complex models on small datasets.
-* Stock market prediction is significantly harder than traditional classification problems.
+* Data cleaning and feature engineering are critical in ML projects.
+* Establishing a baseline is essential before evaluating models.
+* More complex models do not automatically perform better.
+* Financial market prediction is significantly harder than traditional classification tasks.
 
 ---
 
