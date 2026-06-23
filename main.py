@@ -115,3 +115,33 @@ scores = cross_val_score(
 print(scores)
 print("Average:", scores.mean())
 
+
+#random forest model; training
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_predict
+
+rf_pipeline = Pipeline([
+  (  "model",
+    RandomForestClassifier(
+        n_estimators=200,
+        random_state=42
+    )
+  ) 
+])
+
+rf_pipeline.fit(X_train,Y_train)
+
+y_pred_dt = rf_pipeline.predict(X_test)
+
+print(
+    "Random Forest Accuracy:",
+    accuracy_score(
+        y_test,
+        y_pred_dt
+    )
+)
+
+
