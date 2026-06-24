@@ -154,3 +154,13 @@ scores = cross_val_score(
 print(scores)
 
 print("Average:", scores.mean())
+
+df["MA5"] = df["Close"].rolling(window=5).mean()
+df["MA10"] = df["Close"].rolling(window=10).mean()
+
+print(df[["Date", "Close", "MA5", "MA10"]].head(15))
+
+df = df.dropna()
+
+print(df.shape)
+print(df.isnull().sum())
