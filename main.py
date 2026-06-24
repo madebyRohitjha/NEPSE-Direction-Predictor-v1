@@ -144,4 +144,13 @@ print(
     )
 )
 
+scores = cross_val_score(
+    rf_pipeline,
+    X,
+    y,
+    cv=5
+)
 
+print(scores)
+
+print("Average:", scores.mean())
