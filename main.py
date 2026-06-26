@@ -205,3 +205,32 @@ print(
     "Random Forest Accuracy:",
     accuracy_score(y_test, y_pred_rf)
 )
+
+import pandas as pd
+
+importance = pd.DataFrame({
+    "Feature": X.columns,
+    "Importance": rf_pipeline.named_steps["model"].feature_importances_
+})
+
+importance = importance.sort_values(
+    by="Importance",
+    ascending=False
+)
+
+print(importance)
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10,6))
+
+plt.bar(
+    importance["Feature"],
+    importance["Importance"]
+)
+
+plt.xticks(rotation=45)
+
+plt.title("Feature Importance")
+
+plt.show()
