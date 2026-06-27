@@ -160,6 +160,11 @@ df["MA10"] = df["Close"].rolling(window=10).mean()
 
 print(df[["Date", "Close", "MA5", "MA10"]].head(15))
 
+delta = df["Close"].diff()
+gain = delta.clip(lower=0).rolling(14).mean()
+loss = -delta.clip(upper=0).rolling(14).mean()
+df["RSI"] = 100 - (100 / (1 + gain / loss))
+
 df = df.dropna()
 
 print(df.shape)
