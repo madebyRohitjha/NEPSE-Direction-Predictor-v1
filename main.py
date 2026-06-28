@@ -65,7 +65,7 @@ X = df[['Open','High','Low','Close',
 
 y = df['Target']
 
-X_train, X_test, Y_train, y_test = train_test_split(
+X_train, X_test, y_train, y_test = train_test_split(
     X,y,
     test_size=0.2,
     random_state=42
@@ -73,7 +73,7 @@ X_train, X_test, Y_train, y_test = train_test_split(
 
 model = LogisticRegression(max_iter=1000)
 
-model.fit(X_train,Y_train)
+model.fit(X_train,y_train)
 
 preds = model.predict(X_test)
 
@@ -90,9 +90,9 @@ dt_pipeline = Pipeline([
         random_state=42
     ))
 ])
-dt_pipeline.fit(X_train, Y_train)
+dt_pipeline.fit(X_train, y_train)
 
-dt_pipeline.fit(X_train, Y_train)
+dt_pipeline.fit(X_train, y_train)
 
 y_pred_dt = dt_pipeline.predict(X_test)
 
@@ -132,7 +132,7 @@ rf_pipeline = Pipeline([
   ) 
 ])
 
-rf_pipeline.fit(X_train,Y_train)
+rf_pipeline.fit(X_train,y_train)
 
 y_pred_dt = rf_pipeline.predict(X_test)
 
@@ -181,7 +181,8 @@ X = df[
         "Daily_Range",
         "Open_Close_Diff",
         "MA5",
-        "MA10"
+        "MA10",
+        "RSI"
     ]
 ]
 
