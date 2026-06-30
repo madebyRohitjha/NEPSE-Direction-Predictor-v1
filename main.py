@@ -239,7 +239,9 @@ plt.xticks(rotation=45)
 
 plt.title("Feature Importance")
 
-plt.show()
+plt.show(block=False)
+plt.pause(2)
+plt.close()
 
 param_grid = {
     "n_estimators": [100, 200, 300, 500],
@@ -265,3 +267,14 @@ random_search.fit(X_train, y_train)
 
 print(random_search.best_params_)
 print(random_search.best_score_)
+
+best_rf = random_search.best_estimator_
+
+y_pred_best = best_rf.predict(X_test)
+
+print("Tuned Random Forest Test Accuracy:", accuracy_score(y_test, y_pred_best))
+
+from sklearn.metrics import classification_report, confusion_matrix
+
+print(classification_report(y_test, y_pred_best))
+print(confusion_matrix(y_test, y_pred_best))
