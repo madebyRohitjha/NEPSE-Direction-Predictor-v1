@@ -248,3 +248,20 @@ param_grid = {
     "min_samples_leaf": [1, 2, 4],
     "max_features": ["sqrt", "log2"]
 }
+
+from sklearn.model_selection import RandomizedSearchCV
+
+random_search = RandomizedSearchCV(
+    estimator=rf_pipeline.named_steps["model"],
+    param_distributions=param_grid,
+    n_iter=20,
+    cv=5,
+    scoring="accuracy",
+    random_state=42,
+    n_jobs=-1
+)
+
+random_search.fit(X_train, y_train)
+
+print(random_search.best_params_)
+print(random_search.best_score_)
