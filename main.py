@@ -278,3 +278,13 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 print(classification_report(y_test, y_pred_best))
 print(confusion_matrix(y_test, y_pred_best))
+
+import joblib
+
+joblib.dump(best_rf, "best_random_forest.pkl")
+
+print("Best model saved successfully!")
+
+joblib.dump(list(X.columns), "feature_names.pkl")
+
+print("Feature names saved successfully!")
