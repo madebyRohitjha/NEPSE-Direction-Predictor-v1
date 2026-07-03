@@ -1,25 +1,40 @@
-# 🇳🇵 NEPSE Direction Predictor v1
+# 📈 NEPSE Direction Predictor v1
 
-A Machine Learning project that predicts whether the NEPSE (Nepal Stock Exchange) index will move **UP 📈** or **DOWN 📉** on the next trading day using historical market data.
+A Machine Learning project that predicts whether the **NEPSE (Nepal Stock Exchange) Index** will move **UP** or **DOWN** on the next trading day using historical market data and engineered technical indicators.
 
 ---
 
-# 🎯 Project Goal
+# 📌 Project Overview
 
-Build a classification model that predicts:
+Financial markets are difficult to predict because they are influenced by many economic, political, and psychological factors.
 
-* **1 → Market goes UP tomorrow**
-* **0 → Market goes DOWN tomorrow**
+The goal of this project is **not to guarantee profitable predictions**, but to learn and demonstrate a complete end-to-end Machine Learning workflow, including:
 
-using historical NEPSE market information and feature engineering.
+* Data preprocessing
+* Feature engineering
+* Model training
+* Model evaluation
+* Hyperparameter tuning
+* Feature importance analysis
+
+This project was built as part of my Machine Learning learning journey.
+
+---
+
+# 🎯 Problem Statement
+
+Given historical NEPSE index data, predict whether the **next day's closing price** will be:
+
+* 📈 Higher than today's closing price (Target = 1)
+* 📉 Lower than or equal to today's closing price (Target = 0)
 
 ---
 
 # 📂 Dataset
 
-**Dataset:** Historical NEPSE Index Data (2021–2026)
+**Source:** NEPSE Alpha
 
-### Features Available
+The dataset contains daily historical NEPSE index information including:
 
 * Date
 * Open
@@ -31,191 +46,244 @@ using historical NEPSE market information and feature engineering.
 
 ---
 
-# 🧹 Data Cleaning
+# 🛠 Data Preprocessing
 
-Performed the following preprocessing steps:
+The following preprocessing steps were performed:
 
-✅ Converted `Date` to datetime format
+* Removed unnecessary columns
 
-✅ Converted `Percent Change` to numeric values
+  * Symbol
+  * Turn Over
+* Converted Date to datetime format
+* Converted Percent Change from string to numeric
+* Converted Volume from string to numeric
+* Checked for missing values
+* Created binary target variable
 
-✅ Converted `Volume` to numeric values
+Target Variable:
 
-✅ Removed unnecessary columns
-
-✅ Handled invalid and missing values
+```python
+Target = 1 if Tomorrow's Close > Today's Close
+Target = 0 otherwise
+```
 
 ---
 
 # ⚙️ Feature Engineering
 
-Created additional features to better represent market behavior.
+Additional features were created to improve model performance.
 
-### Daily Range
-
-```python
-df["Daily_Range"] = df["High"] - df["Low"]
-```
-
-Measures market volatility during the trading day.
-
----
-
-### Open-Close Difference
-
-```python
-df["Open_Close_Diff"] = df["Close"] - df["Open"]
-```
-
-Measures the market's movement from opening to closing.
-
----
-
-# 🎯 Target Engineering
-
-Created the target variable:
-
-```python
-df["Target"] = (
-    df["Close"].shift(-1)
-    > df["Close"]
-).astype(int)
-```
-
-Meaning:
-
-* **1 → Tomorrow's Close > Today's Close**
-* **0 → Tomorrow's Close ≤ Today's Close**
-
----
-
-# 📊 Exploratory Data Analysis
-
-### Target Distribution
-
-* 📉 Down Days: **53.91%**
-* 📈 Up Days: **46.09%**
-
-### Baseline Accuracy
-
-A model that always predicts **DOWN** would achieve:
+## Daily Range
 
 ```text
-53.91% accuracy
+High − Low
 ```
 
-Any ML model must beat this baseline.
+Measures the daily market volatility.
 
 ---
 
-# 🤖 Models Implemented
-
-## 1. Logistic Regression
-
-**Accuracy:** 57.83%
-
-Successfully outperformed the baseline and currently performs the best.
-
----
-
-## 2. Decision Tree Classifier
-
-**Accuracy:** 54.78%
-
-**Cross Validation Average:** 51.91%
-
-Showed signs of overfitting and underperformed compared to Logistic Regression.
-
----
-
-## 3. Random Forest Classifier
-
-**Accuracy:** 56.09%
-
-Improved over the baseline and Decision Tree but still slightly underperformed compared to Logistic Regression.
-
----
-
-# 📈 Model Comparison
-
-| Model                  | Accuracy |
-| ---------------------- | -------- |
-| Baseline (Always DOWN) | 53.91%   |
-| Decision Tree          | 54.78%   |
-| Random Forest          | 56.09%   |
-| 🥇 Logistic Regression | 57.83%   |
-
----
-
-# 🛠️ Technologies Used
-
-* Python
-* Pandas
-* NumPy
-* Scikit-learn
-* Matplotlib
-* Git
-* GitHub
-
----
-
-# 📂 Project Workflow
+## Open-Close Difference
 
 ```text
-Raw NEPSE Data
-        ↓
-Data Cleaning
-        ↓
-Feature Engineering
-        ↓
-Target Engineering
-        ↓
-Exploratory Data Analysis
-        ↓
-Logistic Regression
-        ↓
-Decision Tree
-        ↓
-Random Forest
-        ↓
-Model Comparison
+Close − Open
+```
+
+Shows the market movement during the trading session.
+
+---
+
+## Moving Average (MA5)
+
+Average closing price over the last 5 trading days.
+
+---
+
+## Moving Average (MA10)
+
+Average closing price over the last 10 trading days.
+
+---
+
+## Relative Strength Index (RSI)
+
+14-day RSI was calculated as a momentum indicator.
+
+---
+
+# 📊 Features Used
+
+* Open
+* High
+* Low
+* Close
+* Percent Change
+* Volume
+* Daily Range
+* Open_Close_Diff
+* MA5
+* MA10
+* RSI
+
+---
+
+# 🤖 Machine Learning Models
+
+The following models were implemented and compared:
+
+## Logistic Regression
+
+A linear classification model used as a baseline.
+
+---
+
+## Decision Tree
+
+A tree-based model capable of learning nonlinear relationships.
+
+---
+
+## Random Forest
+
+An ensemble learning algorithm that combines multiple decision trees.
+
+---
+
+# 🔍 Hyperparameter Tuning
+
+Random Forest hyperparameters were optimized using:
+
+* RandomizedSearchCV
+* 5-Fold Cross Validation
+
+Parameters tuned include:
+
+* n_estimators
+* max_depth
+* min_samples_split
+* min_samples_leaf
+* max_features
+
+---
+
+# 📈 Model Evaluation
+
+The models were evaluated using:
+
+* Accuracy
+* Cross Validation
+* Classification Report
+* Confusion Matrix
+
+---
+
+# 📊 Feature Importance
+
+Feature importance was calculated using the trained Random Forest model.
+
+The most influential features were:
+
+* Volume
+* RSI
+* Percent Change
+* Daily Range
+* Open_Close_Diff
+
+---
+
+# 🧰 Libraries Used
+
+* pandas
+* matplotlib
+* scikit-learn
+* joblib
+
+---
+
+# 📁 Project Structure
+
+```text
+NEPSE-Direction-Predictor/
+
+│
+
+├── data/
+
+│      nepse_dataset.csv
+
+│
+
+├── models/
+
+│      best_random_forest.pkl
+
+│
+
+├── main.py
+
+├── feature_names.pkl
+
+├── README.md
+
+└── requirements.txt
 ```
 
 ---
 
-# 🚀 Upcoming Improvements
+# 🚀 Future Improvements
 
-* [ ] Feature Importance Analysis
-* [ ] Technical Indicators
+Future versions of this project may include:
 
-  * Moving Average (MA5)
-  * Moving Average (MA10)
-  * RSI
-  * MACD
-* [ ] Hyperparameter Tuning
-* [ ] XGBoost
-* [ ] Interactive Dashboard
-* [ ] Model Deployment
+* Streamlit web application
+* Live NEPSE data integration
+* Additional technical indicators
+* XGBoost and LightGBM
+* Time-series cross validation
+* LSTM-based deep learning models
+* SHAP value interpretation
+* Model deployment
 
 ---
 
-# 📚 Key Learnings
+# 📚 What I Learned
 
-* Data cleaning and feature engineering are critical in ML projects.
-* Establishing a baseline is essential before evaluating models.
-* More complex models do not automatically perform better.
-* Financial market prediction is significantly harder than traditional classification tasks.
+This project helped me understand:
+
+* Data preprocessing
+* Feature engineering
+* Classification algorithms
+* Ensemble learning
+* Random Forest
+* Cross Validation
+* Hyperparameter tuning
+* Feature importance
+* Building an end-to-end Machine Learning project
+
+---
+
+# ⚠️ Disclaimer
+
+This project is created for **educational and research purposes only**.
+
+The predictions generated by the model should **not** be considered financial or investment advice.
 
 ---
 
 # 👨‍💻 Author
 
-**Rohit Jha**
+**Rohit**
 
-ICT Student | Aspiring AI/ML Engineer
+Intelligent Computing Student
+Dong-Eui University
 
-GitHub: https://github.com/madebyRohitjha
+Currently learning:
+
+* Machine Learning ✅
+* Deep Learning (Next)
+* Large Language Models (LLMs)
+* Retrieval-Augmented Generation (RAG)
+* AI Agents
 
 ---
 
-⭐ If you found this project interesting, feel free to star the repository.
+⭐ If you found this project useful or interesting, consider giving it a star!
