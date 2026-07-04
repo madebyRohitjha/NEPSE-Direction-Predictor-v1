@@ -288,3 +288,10 @@ print("Best model saved successfully!")
 joblib.dump(list(X.columns), "feature_names.pkl")
 
 print("Feature names saved successfully!")
+
+import joblib
+
+joblib.dump(best_rf, "best_random_forest.pkl")
+joblib.dump(list(X.columns), "feature_names.pkl")
+
+print("Model and feature names saved successfully!")
