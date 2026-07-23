@@ -295,3 +295,36 @@ joblib.dump(best_rf, "best_random_forest.pkl")
 joblib.dump(list(X.columns), "feature_names.pkl")
 
 print("Model and feature names saved successfully!")
+
+import joblib
+import pandas as pd
+
+# Load model
+model = joblib.load("best_random_forest.pkl")
+
+# Load feature names
+feature_names = joblib.load("feature_names.pkl")
+
+print("Loaded Features:")
+print(feature_names)
+
+sample = pd.DataFrame([{
+    "Open": 2900,
+    "High": 2925,
+    "Low": 2885,
+    "Close": 2910,
+    "Percent Change": 0.35,
+    "Volume": 7200000000,
+    "Daily_Range": 40,
+    "Open_Close_Diff": 10,
+    "MA5": 2895,
+    "MA10": 2888,
+    "RSI": 58
+}])
+
+prediction = model.predict(sample)
+
+if prediction[0] == 1:
+    print("Prediction: 📈 UP")
+else:
+    print("Prediction: 📉 DOWN")
