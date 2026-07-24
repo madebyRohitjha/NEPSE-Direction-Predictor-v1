@@ -328,3 +328,18 @@ if prediction[0] == 1:
     print("Prediction: 📈 UP")
 else:
     print("Prediction: 📉 DOWN")
+
+
+y_pred_best = best_rf.predict(X_test)
+
+y_prob = best_rf.predict_proba(X_test)
+
+print("First 10 Prediction Probabilities:")
+print(y_prob[:10])
+
+with open("results.txt", "w") as f:
+    f.write(f"Best Parameters:\n{random_search.best_params_}\n\n")
+    f.write(f"Cross Validation Accuracy: {random_search.best_score_:.4f}\n")
+    f.write(f"Test Accuracy: {accuracy_score(y_test, y_pred_best):.4f}\n")
+
+    
