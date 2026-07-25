@@ -342,4 +342,19 @@ with open("results.txt", "w") as f:
     f.write(f"Cross Validation Accuracy: {random_search.best_score_:.4f}\n")
     f.write(f"Test Accuracy: {accuracy_score(y_test, y_pred_best):.4f}\n")
 
-    
+# Predict the latest available day
+
+latest_data = X.iloc[[-1]]
+
+prediction = best_rf.predict(latest_data)[0]
+probability = best_rf.predict_proba(latest_data)[0]
+
+print("\n========== LATEST MARKET PREDICTION ==========")
+
+if prediction == 1:
+    print("Prediction: 📈 NEPSE may go UP tomorrow")
+else:
+    print("Prediction: 📉 NEPSE may go DOWN tomorrow")
+
+print(f"Confidence (DOWN): {probability[0]*100:.2f}%")
+print(f"Confidence (UP):   {probability[1]*100:.2f}%")
