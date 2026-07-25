@@ -358,3 +358,15 @@ else:
 
 print(f"Confidence (DOWN): {probability[0]*100:.2f}%")
 print(f"Confidence (UP):   {probability[1]*100:.2f}%")
+
+# Export predictions to CSV
+
+results = X_test.copy()
+
+results["Actual"] = y_test.values
+results["Prediction"] = y_pred_best
+results["Correct"] = results["Actual"] == results["Prediction"]
+
+results.to_csv("prediction_results.csv", index=False)
+
+print("Prediction results saved as prediction_results.csv")
