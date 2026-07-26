@@ -370,3 +370,21 @@ results["Correct"] = results["Actual"] == results["Prediction"]
 results.to_csv("prediction_results.csv", index=False)
 
 print("Prediction results saved as prediction_results.csv")
+
+from sklearn.model_selection import TimeSeriesSplit
+from sklearn.model_selection import cross_val_score
+
+tscv = TimeSeriesSplit(n_splits=5)
+
+scores = cross_val_score(
+    rf_pipeline,
+    X,
+    y,
+    cv=tscv,
+    scoring="accuracy"
+)
+
+print("Time Series CV Scores:")
+print(scores)
+
+print("Average:", scores.mean())
