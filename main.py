@@ -415,3 +415,32 @@ X = df[
         "Signal"
     ]
 ]
+
+tuned_importance = pd.DataFrame({
+    "Feature": X.columns,
+    "Importance": best_rf.feature_importances_
+}).sort_values(by="Importance", ascending=False)
+
+print("\nTuned Random Forest Feature Importance")
+print(tuned_importance)
+
+
+tuned_importance.to_csv(
+    "tuned_feature_importance.csv",
+    index=False
+)
+
+print("Saved tuned feature importance.")
+
+plt.figure(figsize=(10,6))
+
+plt.bar(
+    tuned_importance["Feature"],
+    tuned_importance["Importance"]
+)
+
+plt.xticks(rotation=45)
+plt.title("Tuned Random Forest Feature Importance")
+plt.tight_layout()
+plt.savefig("tuned_feature_importance.png")
+plt.close()
