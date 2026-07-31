@@ -444,3 +444,18 @@ plt.title("Tuned Random Forest Feature Importance")
 plt.tight_layout()
 plt.savefig("tuned_feature_importance.png")
 plt.close()
+
+from sklearn.metrics import roc_auc_score
+
+y_prob = best_rf.predict_proba(X_test)[:, 1]
+
+
+roc_auc = roc_auc_score(y_test, y_prob)
+
+print(f"ROC-AUC Score: {roc_auc:.4f}")
+
+with open("results.txt", "w") as f:
+    f.write(f"Best Parameters:\n{random_search.best_params_}\n\n")
+    f.write(f"Cross Validation Accuracy: {random_search.best_score_:.4f}\n")
+    f.write(f"Test Accuracy: {accuracy_score(y_test, y_pred_best):.4f}\n")
+    f.write(f"ROC-AUC Score: {roc_auc:.4f}\n")
