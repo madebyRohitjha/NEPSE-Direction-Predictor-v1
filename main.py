@@ -459,3 +459,37 @@ with open("results.txt", "w") as f:
     f.write(f"Cross Validation Accuracy: {random_search.best_score_:.4f}\n")
     f.write(f"Test Accuracy: {accuracy_score(y_test, y_pred_best):.4f}\n")
     f.write(f"ROC-AUC Score: {roc_auc:.4f}\n")
+
+    import joblib
+import pandas as pd
+
+# Load model
+model = joblib.load("best_random_forest.pkl")
+
+sample = pd.DataFrame([{
+    "Open": 2900,
+    "High": 2925,
+    "Low": 2885,
+    "Close": 2910,
+    "Percent Change": 0.35,
+    "Volume": 7200000000,
+    "Daily_Range": 40,
+    "Open_Close_Diff": 10,
+    "MA5": 2895,
+    "MA10": 2888,
+    "RSI": 58,
+    "MACD": 15.3,
+    "Signal": 14.8
+}])
+
+prediction = model.predict(sample)[0]
+probability = model.predict_proba(sample)[0]
+
+print("="*50)
+
+if prediction == 1:
+    print("Prediction: 📈 UP")
+else:
+    print("Prediction: 📉 DOWN")
+
+print(f"Confidence: {max(probability)*100:.2f}%")
