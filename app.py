@@ -49,3 +49,34 @@ if st.button("Predict"):
 
     st.write(f"Confidence (DOWN): {probability[0]*100:.2f}%")
     st.write(f"Confidence (UP): {probability[1]*100:.2f}%")
+
+    st.set_page_config(
+    page_title="NEPSE Predictor",
+    page_icon="📈",
+    layout="wide"
+)
+
+st.title("📈 NEPSE Direction Predictor")
+st.markdown("Predict whether the NEPSE index will move **UP** or **DOWN** on the next trading day.")
+
+st.sidebar.header("About")
+st.sidebar.write(
+    """
+    This app uses a trained Random Forest model
+    to predict the next day's NEPSE direction.
+    """
+)
+col1, col2 = st.columns(2)
+
+with col1:
+    open_price = st.number_input("Open")
+    high = st.number_input("High")
+    low = st.number_input("Low")
+    close = st.number_input("Close")
+    percent_change = st.number_input("Percent Change")
+
+with col2:
+    volume = st.number_input("Volume")
+    ma5 = st.number_input("MA5")
+    ma10 = st.number_input("MA10")
+    rsi = st.number_input("RSI")
