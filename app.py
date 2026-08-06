@@ -2,28 +2,77 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Load model
+# ----------------------------
+# Page Configuration
+# ----------------------------
+st.set_page_config(
+    page_title="NEPSE Predictor",
+    page_icon="📈",
+    layout="wide"
+)
+
+# ----------------------------
+# Load Model
+# ----------------------------
 model = joblib.load("best_random_forest.pkl")
 
+# ----------------------------
+# Header
+# ----------------------------
 st.title("📈 NEPSE Direction Predictor")
+st.markdown(
+    "Predict whether the **NEPSE Index** will move **UP** or **DOWN** on the next trading day."
+)
 
-st.write("Enter today's market data")
+# ----------------------------
+# Sidebar
+# ----------------------------
+st.sidebar.header("About")
 
-open_price = st.number_input("Open")
-high = st.number_input("High")
-low = st.number_input("Low")
-close = st.number_input("Close")
-percent_change = st.number_input("Percent Change")
-volume = st.number_input("Volume")
+st.sidebar.write("""
+This application uses a **Random Forest Classifier**
+trained on historical NEPSE data.
 
+### Features Used
+- Open
+- High
+- Low
+- Close
+- Percent Change
+- Volume
+- MA5
+- MA10
+- RSI
+
+Daily Range and Open-Close Difference are calculated automatically.
+""")
+
+# ----------------------------
+# Input Section
+# ----------------------------
+col1, col2 = st.columns(2)
+
+with col1:
+    open_price = st.number_input("Open", value=2900.0)
+    high = st.number_input("High", value=2925.0)
+    low = st.number_input("Low", value=2885.0)
+    close = st.number_input("Close", value=2910.0)
+    percent_change = st.number_input("Percent Change", value=0.35)
+
+with col2:
+    volume = st.number_input("Volume", value=7200000000.0)
+    ma5 = st.number_input("MA5", value=2895.0)
+    ma10 = st.number_input("MA10", value=2888.0)
+    rsi = st.number_input("RSI", value=58.0)
+
+# Automatically calculated features
 daily_range = high - low
-open_close_diff = close - open
+open_close_diff = close - open_price
 
-ma5 = st.number_input("MA5")
-ma10 = st.number_input("MA10")
-rsi = st.number_input("RSI")
-
-if st.button("Predict"):
+# ----------------------------
+# Prediction
+# ----------------------------
+if st.button("🔮 Predict"):
 
     sample = pd.DataFrame([{
         "Open": open_price,
@@ -42,41 +91,23 @@ if st.button("Predict"):
     prediction = model.predict(sample)[0]
     probability = model.predict_proba(sample)[0]
 
+    confidence = max(probability)
+
+    st.divider()
+
     if prediction == 1:
-        st.success("📈 NEPSE may go UP")
+        st.success("📈 Predicted Market Direction: **UP**")
     else:
-        st.error("📉 NEPSE may go DOWN")
+        st.error("📉 Predicted Market Direction: **DOWN**")
 
-    st.write(f"Confidence (DOWN): {probability[0]*100:.2f}%")
-    st.write(f"Confidence (UP): {probability[1]*100:.2f}%")
+    st.subheader("Prediction Confidence")
 
-    st.set_page_config(
-    page_title="NEPSE Predictor",
-    page_icon="📈",
-    layout="wide"
-)
+    st.progress(float(confidence))
 
-st.title("📈 NEPSE Direction Predictor")
-st.markdown("Predict whether the NEPSE index will move **UP** or **DOWN** on the next trading day.")
+    st.metric(
+        label="Confidence",
+        value=f"{confidence*100:.2f}%"
+    )
 
-st.sidebar.header("About")
-st.sidebar.write(
-    """
-    This app uses a trained Random Forest model
-    to predict the next day's NEPSE direction.
-    """
-)
-col1, col2 = st.columns(2)
-
-with col1:
-    open_price = st.number_input("Open")
-    high = st.number_input("High")
-    low = st.number_input("Low")
-    close = st.number_input("Close")
-    percent_change = st.number_input("Percent Change")
-
-with col2:
-    volume = st.number_input("Volume")
-    ma5 = st.number_input("MA5")
-    ma10 = st.number_input("MA10")
-    rsi = st.number_input("RSI")
+    st.write(f"📉 Down Probability: **{probability[0]*100:.2f}%**")
+    st.write(f"📈 Up Probability: **{probability[1]*100:.2f}%**")
