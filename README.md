@@ -287,3 +287,12 @@ Currently learning:
 ---
 
 ⭐ If you found this project useful or interesting, consider giving it a star!
+---
+
+## 👨‍💻 Author
+
+**Made with ❤️ by Rohit Jha**
+
+GitHub: https://github.com/madebyrohitjha
+
+© 2026 Rohit Jha. All rights reserved.

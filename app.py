@@ -1,3 +1,12 @@
+"""
+NEPSE Direction Predictor
+
+Author: Rohit Jha
+GitHub: https://github.com/madebyrohitjha
+
+© 2026 Rohit Jha. All Rights Reserved.
+"""
+
 import streamlit as st
 import joblib
 import pandas as pd
@@ -111,3 +120,5 @@ if st.button("🔮 Predict"):
 
     st.write(f"📉 Down Probability: **{probability[0]*100:.2f}%**")
     st.write(f"📈 Up Probability: **{probability[1]*100:.2f}%**")
+st.markdown("---")
+st.caption("👨‍💻 Made by Rohit Jha | © 2026 Rohit Jha | Machine Learning Portfolio Project")

@@ -1,3 +1,12 @@
+"""
+NEPSE Direction Predictor
+
+Author: Rohit Jha
+GitHub: https://github.com/madebyrohitjha
+
+© 2026 Rohit Jha. All Rights Reserved.
+"""
+
 import joblib
 import pandas as pd
 

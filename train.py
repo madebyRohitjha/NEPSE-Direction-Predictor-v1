@@ -1,3 +1,12 @@
+"""
+NEPSE Direction Predictor
+
+Author: Rohit Jha
+GitHub: https://github.com/madebyrohitjha
+
+© 2026 Rohit Jha. All Rights Reserved.
+"""
+
 import pandas as pd
 
 df= pd.read_csv("nepsealpha_export_price_NEPSE_2021-06-28_2026-06-17_unadjusted.csv")
